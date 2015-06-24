@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ChatOps</title>
+		<meta charset="utf-8">
+		<style>
+			@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+			@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+			@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+			body {
+				font-family: 'Droid Serif';
+			}
+			h1, h2, h3 {
+				font-family: 'Yanone Kaffeesatz';
+				font-weight: normal;
+			}
+			.left-column{
+				color: #777;
+				width: 20%;
+				height: 92%;
+				float: left;
+			}
+			.left-column h2:last-of-type, .left-column h3:last-child {
+				color: #000;
+			}
+			.right-column{
+				width: 75%;
+				float: right;
+				padding-top: 1em;
+			}
+			.remark-code, .remark-inline-code {
+				font-family: 'Ubuntu Mono';
+			}
+		</style>
+	</head>
+	<body>
+		<textarea id="source">
+
+			class: center, middle
+
+			# ChatOps
+			## Smarter Team Communication & Automation
+
+			---
+			.left-column[
+				## What is it?
+			]
+			.right-column[
+				*"Chat rooms are the 21st century water cooler" - Will Soula*
+
+			- Communication can be so much more than email
+
+			- ChatOps prefers team communication through chat rooms
+
+			- Integrates chat rooms with services
+
+			- Automates processes through chatbots
+			]
+			---
+			.left-column[
+			## What is it?
+			## Why do it?
+			]
+			.right-column[
+
+			- React to events as a team, rather than individually (as with email)
+
+			- Learn by showing. Introduce new team members to processes interactively
+
+			- Archive everything, and easily read history later
+
+			- Reduce email trigger fatigue and subject only / one-liners
+
+			- Work on things from afar (or from a bar)
+			]
+			---
+			class: center,middle
+			# OK, show me something.
+			---
+			.left-column[
+			## Example
+			## Releasing Stories
+			]
+			.right-column[
+			Today we follow a highly manual process to declare stories ready for release.  Let's look at what that could look like with chatops:
+
+			First, Steve announces his feature is being released today:
+			```
+			ssmall: OK, my awesome feature is ready to release today.
+			ssmall: !rally release US23234
+			Rezi: "US23234 - Steve's Awesome Feature" scheduled for release.
+			```
+
+			----
+
+			Later, Andrew's ready to release a feature:
+			```
+			ateahan: !rally release US22303
+			Rezi: "US22303 - Andrew's Awesome Feature" scheduled for release.
+			```
+
+			----
+
+			Finally, Mae has tested a defect fix that is ready for release:
+			```
+			mkeefe: !rally release DE21202
+			Rezi: "DE21202 - Fix an old feature" scheduled for release.
+			```
+			]
+			???
+			Notice that these transactions happen in full view of all users and are archived.
+			---
+			.left-column[
+			## Example
+			## Releasing Stories
+			]
+			.right-column[
+			Now it's the end of the day, and Mike is ready to confirm the release.
+			```
+			mdunn: !rally today
+			Rezi: Today's release (Release XYX) includes the following items:
+					US23234 - Steve's Awesome Feature
+					US22303 - Andrew's Awesome Feature
+					US22321 - More Awesome Feature
+					US22403 - YAMF (Yet Another Awesome Feature)
+					DE21202 - Fix an old feature
+			```
+
+			----
+
+			Looks good, let's complete the release:
+			```
+			mdunn: !rally today notify
+			Rezi: Release notes  have been dispatched to rez1@rez1.com.
+			mdunn: !rally today complete
+			Rezi: "Release XYX" has been marked as complete.
+			```
+			]
+			---
+			#What did we just see?
+			- Happened in full view of the entire team
+			- Humans only doing confirmation, not processing
+			- The entire series of events is archived
+			- Many chances for team to react to changes news (or not)
+		</textarea>
+		<script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+		</script>
+		<script>
+			var slideshow = remark.create();
+		</script>
+	</body>
+</html>

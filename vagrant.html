@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Vagrant</title>
+		<meta charset="utf-8">
+		<style>
+			@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+			@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+			@import url(http://fonts.googleapis.com/css?family=Oswald);
+			body {
+				font-family: 'Open Sans';
+			}
+			h1, h2, h3, h4 {
+				font-family: 'Oswald';
+				font-weight: normal;
+			}
+			.left-column{
+				color: #777;
+				width: 18%;
+				height: 92%;
+				float: left;
+			}
+			.left-column h3:last-of-type, .left-column h4:last-child {
+				color: #000;
+			}
+			.right-column{
+				width: 80%;
+				float: right;
+				padding-top: 1em;
+			}
+			.remark-code, .remark-inline-code {
+				font-family: 'Inconsolata';
+			}
+			code {
+				border-radius: 15px;
+			}
+			.footnote {
+				position: absolute;
+				bottom: 3em;
+			}
+			.red { color: #fa0000; }
+		</style>
+	</head>
+	<body>
+		<textarea id="source">
+
+			class: center, middle
+
+			# Vagrant
+			## Reproducible Development Environments
+
+			---
+			.left-column[
+			### What is it?
+			]
+			.right-column[
+			*"Create and configure lightweight, reproducible, and portable development environments."*
+
+			### Vagrant expresses virtual machines as code
+			- start with a base image
+			- control cpu & memory parameters
+			- set up virtual networking
+			- share folders from your host
+			- forward ports to your host system
+
+			```ruby
+			Vagrant.configure(2) do |config|
+				config.vm.box = "centos-64"
+				config.vm.define "database" do |database|
+
+					db.vm.network "forwarded_port", guest: 3306, host: 3306
+
+					db.vm.provider "virtualbox" do |vb|
+						vb.memory = "512"
+					end
+				end
+			end
+			```
+			]
+			---
+			.left-column[
+			### What is it?
+			]
+			.right-column[
+			### But wait, there's more!
+			- run multiple VMs
+			- network VMs together
+
+			```ruby
+			Vagrant.configure(2) do |config|
+				config.vm.box = "centos-64"
+
+				config.vm.define "tomcat" do |tc|
+					tc.vm.network "forwarded_port", guest: 8080, host: 8080
+					tc.vm.network "private_network", ip: "10.253.0.20"
+					tc.vm.synced_folder "opt/", "/opt/"
+					tc.vm.provider "virtualbox" do |vb|
+						vb.memory = "4096"
+						vb.cpus = 4
+					end
+				end
+				config.vm.define "database" do |database|
+					db.vm.network "forwarded_port", guest: 3306, host: 3306
+					db.vm.network "private_network", ip: "10.253.0.21"
+					db.vm.provider "virtualbox" do |vb|
+						vb.memory = "1024"
+						vb.cpus = 2
+					end
+				end
+			end
+			```
+			]
+			---
+			.left-column[
+			### What is it?
+			]
+			.right-column[
+			### Call now and we'll include:
+			- compatible with local VMs or cloud systems .red[*]
+
+			- uses VirtualBox (Oracle's free hypervisor) by default
+
+			- open source & extensible
+
+			- plugin architecture with rich ecosystem
+
+			- provision with your choice of config management tool
+
+			.footnote[.red[*] Also Docker support :)]
+			]
+
+			---
+			class: center, middle
+			# So how do I .red[use] it?
+			![Act Natural, Instructions will follow.](https://git.fedorahosted.org/cgit/anaconda-images.git/plain/rnotes/fortune-act_natural.png?id=anaconda-images-7.3.92-1)
+			---
+			.left-column[
+			### How-to
+			]
+			.right-column[
+			Vagrant is a command line tool. Usage is built around a few simple actions
+			- **up**   *start VM for the first time and provision*
+			- **ssh**   *connect to the VM via SSH*
+			- **suspend**   *save state and pause execution*
+			- **resume**   *wake up and resume from saved*
+			- **reload**   *restart without provisioning*
+			- **halt**   *power off gracefully*
+			- **destroy**   *delete VM and all files*
+			]
+			---
+			.left-column[
+			### How-to
+			### Start a VM
+			]
+			.right-column[
+			Configs are stored in source control, ready to run:
+
+			```bash
+			> svn co http://rezpache:8000/svn/ROOT/branches/servers/SERVER.PERCONA-5.6.VAGRANT/
+			```
+
+			```bash
+			> vagrant up
+			==> db: Importing base box 'r1centos6'...
+			==> db: Matching MAC address for NAT networking...
+			==> db: Setting the name of the VM: r1-vagrant-db
+			==> db: Clearing any previously set network interfaces...
+			==> db: Preparing network interfaces based on configuration...
+				db: Adapter 1: nat
+				db: Adapter 2: hostonly
+			==> db: Forwarding ports...
+				db: 3306 => 3306 (adapter 1)
+				db: 22 => 2222 (adapter 1)
+			==> db: Running 'pre-boot' VM customizations...
+			==> db: Booting VM...
+			==> db: Waiting for machine to boot. This may take a few minutes.
+				db: SSH address: 127.0.0.1:2222
+				db: SSH username: vagrant
+				db: SSH auth method: private key
+			==> db: Machine booted and ready!
+			==> db: Checking for guest additions in VM...
+			==> db: Setting hostname...
+			==> db: Configuring and enabling network interfaces...
+			==> db: Running provisioner: shell...
+			```
+			]
+
+			---
+			.left-column[
+			### How-to
+			### Connect via SSH
+			]
+			.right-column[
+
+			```bash
+			> vagrant ssh
+			Last login: Wed Jun 24 12:10:00 2015 from 10.0.2.2
+			 _____  ______ ______    __
+			|  __ \|  ____|___  /   /_ |
+			| |__) | |__     / /_____| |
+			|  _  /|  __|   / /______| |
+			| | \ \| |____ / /__     | |
+			|_|  \_\______/_____|    |_|
+
+			[vagrant@db ~]$ echo -e "Hello World, I'm $USER."
+			Hello World, I'm vagrant.
+			```
+			.footnote[*pretty easy right?*]
+			]
+
+			---
+			.left-column[
+			### How-to
+			### Stop a VM
+			]
+			.right-column[
+
+			```bash
+			> vagrant halt
+			==> db: Attempting graceful shutdown of VM...
+
+			> vagrant status
+			Current machine states:
+
+			db                        poweroff (virtualbox)
+
+			The VM is powered off. To restart the VM, simply run `vagrant up`
+			```
+			]
+
+			---
+			.left-column[
+			### How-to
+			### Pause and Resume
+			]
+			.right-column[
+
+			```bash
+			> vagrant suspend
+			==> db: Saving VM state and suspending execution...
+
+			> vagrant status
+			Current machine states:
+
+			db                        saved (virtualbox)
+
+			To resume this VM, simply run `vagrant up`.
+			```
+
+			```bash
+			> vagrant up
+
+			> vagrant status
+			==> db: Resuming suspended VM...
+			==> db: Booting VM...
+			==> db: Waiting for machine to boot. This may take a few minutes...
+				db: SSH address: 127.0.0.1:2222
+				db: SSH username: vagrant
+				db: SSH auth method: private key
+				db: Warning: Connection refused. Retrying...
+			==> db: Machine booted and ready!
+			```
+			]
+			---
+			class: center, middle
+			# What does this have to do with my .red[database]?
+			![Let's all go to the kitchen!](https://git.fedorahosted.org/cgit/anaconda-images.git/plain/rnotes/f11rh7-3is_intermission.png?id=1896a3f050553eeb0ff971658e1a88b8893a5920)
+			---
+			class: center, middle
+			# Is that it?
+			## Nope!
+			---
+			.left-column[
+			### The power:
+			]
+			.right-column[
+			- Maintain many project workspaces without re-configuring
+			- Run multiple services in containers
+			- Easily switch context without penalty
+			- Spend less time fixing local environment
+			- Simulate simple or complex environments
+			- Easily package and distribute
+			- Run the *same application* on any OS
+			- Do a quick experiment, then throw it away
+			]
+			---
+			class: center, middle
+			# The end.
+			```bash
+			$ vagrant halt
+			```
+		</textarea>
+		<script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+		</script>
+		<script>
+			var slideshow = remark.create();
+		</script>
+	</body>
+</html>

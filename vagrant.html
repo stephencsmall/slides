@@ -39,6 +39,15 @@
 				bottom: 3em;
 			}
 			.red { color: #fa0000; }
+			.diagram {
+				background-image: url(db-flow.jpg)
+			}
+			.full-width {
+				background-size: auto 100%;
+			}
+			.full-height {
+				background-size: 100% auto;
+			}
 		</style>
 	</head>
 	<body>
@@ -128,7 +137,27 @@
 
 			.footnote[.red[*] Also Docker support :)]
 			]
+			---
+			.left-column[
+			### The power:
+			]
+			.right-column[
+			- Maintain many project workspaces without re-configuring
 
+			- Run multiple services in containers
+
+			- Easily switch context without penalty
+
+			- Spend less time fixing local environment
+
+			- Simulate simple or complex environments
+
+			- Easily package and distribute
+
+			- Run the *same application* on any OS
+
+			- Do a quick experiment, then throw it away
+			]
 			---
 			class: center, middle
 			# So how do I .red[use] it?
@@ -266,23 +295,7 @@
 			# What does this have to do with my .red[database]?
 			![Let's all go to the kitchen!](https://git.fedorahosted.org/cgit/anaconda-images.git/plain/rnotes/f11rh7-3is_intermission.png?id=1896a3f050553eeb0ff971658e1a88b8893a5920)
 			---
-			class: center, middle
-			# Is that it?
-			## Nope!
-			---
-			.left-column[
-			### The power:
-			]
-			.right-column[
-			- Maintain many project workspaces without re-configuring
-			- Run multiple services in containers
-			- Easily switch context without penalty
-			- Spend less time fixing local environment
-			- Simulate simple or complex environments
-			- Easily package and distribute
-			- Run the *same application* on any OS
-			- Do a quick experiment, then throw it away
-			]
+			class: diagram, full-width
 			---
 			class: center, middle
 			# The end.
